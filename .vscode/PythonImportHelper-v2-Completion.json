@@ -1,0 +1,92 @@
+[
+    {
+        "label": "streamlit",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "streamlit",
+        "description": "streamlit",
+        "detail": "streamlit",
+        "documentation": {}
+    },
+    {
+        "label": "sqlite3",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sqlite3",
+        "description": "sqlite3",
+        "detail": "sqlite3",
+        "documentation": {}
+    },
+    {
+        "label": "init_db",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def init_db():\n    conn = sqlite3.connect(\"books.db\")\n    c = conn.cursor()\n    c.execute('''CREATE TABLE IF NOT EXISTS books (\n                    id INTEGER PRIMARY KEY AUTOINCREMENT,\n                    title TEXT NOT NULL,\n                    author TEXT NOT NULL,\n                    year INTEGER NOT NULL,\n                    genre TEXT NOT NULL,\n                    read BOOLEAN NOT NULL)''')",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "add_book",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def add_book(title, author, year, genre, read):\n    conn = sqlite3.connect(\"books.db\")\n    c = conn.cursor()\n    c.execute(\"INSERT INTO books (title, author, year, genre, read) VALUES (?, ?, ?, ?, ?)\",\n              (title, author, year, genre, read))\n    conn.commit()\n    conn.close()\n# Load all books\ndef load_books():\n    conn = sqlite3.connect(\"books.db\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "load_books",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def load_books():\n    conn = sqlite3.connect(\"books.db\")\n    c = conn.cursor()\n    c.execute(\"SELECT * FROM books\")\n    books = c.fetchall()\n    conn.close()\n    return books\n# Remove book by title\ndef remove_book(title):\n    conn = sqlite3.connect(\"books.db\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "remove_book",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def remove_book(title):\n    conn = sqlite3.connect(\"books.db\")\n    c = conn.cursor()\n    c.execute(\"DELETE FROM books WHERE title = ?\", (title,))\n    conn.commit()\n    conn.close()\n# Search books by title or author\ndef search_books(query):\n    conn = sqlite3.connect(\"books.db\")\n    c = conn.cursor()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "search_books",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def search_books(query):\n    conn = sqlite3.connect(\"books.db\")\n    c = conn.cursor()\n    c.execute(\"SELECT * FROM books WHERE title LIKE ? OR author LIKE ?\", \n              (f\"%{query}%\", f\"%{query}%\"))\n    results = c.fetchall()\n    conn.close()\n    return results\n# Mark book as read/unread\ndef update_read_status(title, status):",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "update_read_status",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def update_read_status(title, status):\n    conn = sqlite3.connect(\"books.db\")\n    c = conn.cursor()\n    c.execute(\"UPDATE books SET read = ? WHERE title = ?\", (status, title))\n    conn.commit()\n    conn.close()\n# Get statistics\ndef get_statistics():\n    books = load_books()\n    total_books = len(books)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_statistics",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def get_statistics():\n    books = load_books()\n    total_books = len(books)\n    read_books = sum(1 for book in books if book[5] == 1)\n    return total_books, read_books, (read_books / total_books * 100 if total_books else 0)\n# Initialize Database\ninit_db()\n# Streamlit UI\nst.title(\"📚 Personal Library Manager\")\nmenu = st.sidebar.radio(\"Menu\", [\"Add Book\", \"Remove Book\", \"Search Books\", \"View All Books\", \"Update Read Status\", \"Statistics\"])",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "menu",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "menu = st.sidebar.radio(\"Menu\", [\"Add Book\", \"Remove Book\", \"Search Books\", \"View All Books\", \"Update Read Status\", \"Statistics\"])\nif menu == \"Add Book\":\n    st.subheader(\"Add a New Book\")\n    title = st.text_input(\"Title\")\n    author = st.text_input(\"Author\")\n    year = st.number_input(\"Publication Year\", min_value=1700, max_value=2025, step=1)\n    genre = st.selectbox(\"Genre\", [\"Fiction\", \"Motivation\", \"Science\", \"Love Story\", \"Horror\", \"Others\"])\n    read = st.checkbox(\"Have you read this book?\")\n    if st.button(\"Add Book\"):\n        if not title or not author or year == 0:",
+        "detail": "main",
+        "documentation": {}
+    }
+]
